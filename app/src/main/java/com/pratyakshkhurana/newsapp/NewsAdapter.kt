@@ -1,5 +1,6 @@
 package com.pratyakshkhurana.newsapp
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,8 +12,11 @@ import kotlinx.android.synthetic.main.item_news.view.*
 //Adapter class , we extend and pass viewHolder in RecyclerView.Adapter<>
 //adapter needs data , which will come from activity or from API call or from database
 //adapter needs data so it passed to it's constructor
-class NewsAdapter(private val items: ArrayList<String>, private val listener: NewsItemClicked) :
+class NewsAdapter(private val listener: NewsItemClicked) :
     RecyclerView.Adapter<NewsAdapter.NewsViewHolder>() {
+
+    private val items: ArrayList<News>  = ArrayList()
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewsViewHolder {
         //whenever view is created it is called
         //LayoutInflater class, converts xml to view which is passed to viewHolder
@@ -30,12 +34,23 @@ class NewsAdapter(private val items: ArrayList<String>, private val listener: Ne
         //extract data from current position
         //holder is an instance of NewsViewHolder
         val currentItem = items[position]
-        holder.title.text = currentItem
+        holder.title.text = currentItem.title
     }
 
     override fun getItemCount(): Int {
         //called only once, returns total items in list
         return items.size
+    }
+
+    //to update items of adapter
+    @SuppressLint("NotifyDataSetChanged")
+    fun updateNews(updatedItems : ArrayList<News>){
+        items.clear()
+        items.addAll(updatedItems)
+
+        //tells adapter to refresh adapter and all 3 functions are
+        //called again to refresh data
+        notifyDataSetChanged()
     }
 
     //we basically pass all small items that repeat in recycler view to adapter through inflating by viewHolder
@@ -49,6 +64,6 @@ class NewsAdapter(private val items: ArrayList<String>, private val listener: Ne
 //used as callback which will be handled by main activity for handling clicks of itemView
 //used for making callback
 interface NewsItemClicked {
-    fun onItemClicked(item: String)
+    fun onItemClicked(item: News)
 }
 
