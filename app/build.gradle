@@ -33,10 +33,15 @@ android {
 }
 
 dependencies {
+    //chrome custom tab dependency to open url in app itself
+    implementation "androidx.browser:browser:1.4.0"
+
     implementation 'androidx.core:core-ktx:1.8.0'
     implementation 'androidx.appcompat:appcompat:1.4.2'
     implementation 'com.google.android.material:material:1.6.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation 'com.github.bumptech.glide:glide:4.13.2'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.13.2'
     implementation 'com.android.volley:volley:1.2.1'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'

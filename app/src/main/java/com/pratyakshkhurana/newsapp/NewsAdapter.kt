@@ -1,11 +1,15 @@
 package com.pratyakshkhurana.newsapp
 
 import android.annotation.SuppressLint
+import android.graphics.Color
+import android.speech.tts.TextToSpeech
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.item_news.view.*
 
 //extend NewsAdapter class to recycler view adapter class and pass viewHolder
@@ -15,7 +19,8 @@ import kotlinx.android.synthetic.main.item_news.view.*
 class NewsAdapter(private val listener: NewsItemClicked) :
     RecyclerView.Adapter<NewsAdapter.NewsViewHolder>() {
 
-    private val items: ArrayList<News>  = ArrayList()
+    //data through API call
+    private val items: ArrayList<News> = ArrayList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewsViewHolder {
         //whenever view is created it is called
@@ -35,6 +40,10 @@ class NewsAdapter(private val listener: NewsItemClicked) :
         //holder is an instance of NewsViewHolder
         val currentItem = items[position]
         holder.title.text = currentItem.title
+        holder.author.text = currentItem.author
+        holder.title.setTextColor(Color.parseColor("#ffffff"))
+        holder.author.setTextColor(Color.parseColor("#ffffff"))
+        Glide.with(holder.itemView.context).load(currentItem.urlToImage).into(holder.img)
     }
 
     override fun getItemCount(): Int {
@@ -44,7 +53,7 @@ class NewsAdapter(private val listener: NewsItemClicked) :
 
     //to update items of adapter
     @SuppressLint("NotifyDataSetChanged")
-    fun updateNews(updatedItems : ArrayList<News>){
+    fun updateNews(updatedItems: ArrayList<News>) {
         items.clear()
         items.addAll(updatedItems)
 
@@ -58,6 +67,8 @@ class NewsAdapter(private val listener: NewsItemClicked) :
     //pass itemView to adapter
     class NewsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val title: TextView = itemView.tv
+        val author: TextView = itemView.author
+        val img: ImageView = itemView.image
     }
 }
 

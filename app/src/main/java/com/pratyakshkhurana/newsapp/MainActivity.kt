@@ -1,15 +1,17 @@
 package com.pratyakshkhurana.newsapp
 
-import androidx.appcompat.app.AppCompatActivity
+import android.graphics.Color
+import android.net.Uri
 import android.os.Bundle
-import android.view.View
 import android.widget.Toast
-import androidx.appcompat.view.menu.ActionMenuItemView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.browser.customtabs.CustomTabColorSchemeParams
+import androidx.browser.customtabs.CustomTabsIntent
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.volley.Request
-import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import kotlinx.android.synthetic.main.activity_main.*
+
 
 class MainActivity : AppCompatActivity(), NewsItemClicked {
     //accessible from everywhere
@@ -36,8 +38,7 @@ class MainActivity : AppCompatActivity(), NewsItemClicked {
     //data passed to adapter which will be shown in recycler view
     private fun fetchData() {
         //API to fetch data
-        val url = "https://saurav.tech/NewsAPI/top-headlines/category/health/in.json"
-
+        val url = "https://saurav.tech/NewsAPI/top-headlines/category/technology/in.json"
         // making JsonObjectRequest passed to queue then processing takes place,
         //and it listens in listener / errorListener
         val jsonObjectRequest = JsonObjectRequest(
@@ -67,6 +68,7 @@ class MainActivity : AppCompatActivity(), NewsItemClicked {
                 mAdapter.updateNews(newsArray)
             },
             {
+                Toast.makeText(this, "Error !", Toast.LENGTH_SHORT).show()
             }
         )
 
@@ -75,5 +77,10 @@ class MainActivity : AppCompatActivity(), NewsItemClicked {
     }
 
     override fun onItemClicked(item: News) {
+        //used chrome custom tabs  for implementing custom tab
+        //that opens article link in app itself
+        val builder = CustomTabsIntent.Builder()
+        val customTabsIntent = builder.build()
+        customTabsIntent.launchUrl(this, Uri.parse(item.url))
     }
 }
